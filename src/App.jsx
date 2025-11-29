@@ -1,13 +1,11 @@
-import React, { Suspense, lazy } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Suspense } from "react-router-dom";
+import { lazy } from "react";
 import PrivateRoute from "./router/PrivateRoute";
 import { AuthProvider } from "./context/AuthContext";
-import './App.css';
 
 import Login from "./pages/Login";
-const MapPage = lazy(() => import("./components/MapPage"));
+const MapPage = lazy(() => import("./pages/MapPage"));
 const SegmentDetail = lazy(() => import("./pages/SegmentDetail"));
-const Stats = lazy(() => import("./pages/Stats"));
 
 // Loading fallback component
 const LoadingFallback = () => (
@@ -24,42 +22,31 @@ export default function App() {
     <AuthProvider>
       <BrowserRouter>
         <Suspense fallback={<LoadingFallback />}>
-          <main>
-            <Routes>
+          <Routes>
 
             {/* Public */}
             <Route path="/login" element={<Login />} />
 
             {/* Private */}
-            <Route
-              path="/"
+            <Route 
+              path="/" 
               element={
                 <PrivateRoute>
                   <MapPage />
                 </PrivateRoute>
-              }
+              } 
             />
 
-            <Route
-              path="/stats"
-              element={
-                <PrivateRoute>
-                  <Stats />
-                </PrivateRoute>
-              }
-            />
-
-            <Route
-              path="/segment/:id"
+            <Route 
+              path="/segment/:id" 
               element={
                 <PrivateRoute>
                   <SegmentDetail />
                 </PrivateRoute>
-              }
+              } 
             />
 
-            </Routes>
-          </main>
+          </Routes>
         </Suspense>
       </BrowserRouter>
     </AuthProvider>
